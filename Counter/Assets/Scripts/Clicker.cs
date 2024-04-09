@@ -1,25 +1,43 @@
-using System;
+using System.Collections;
+using TMPro;
 using UnityEngine;
-using UnityEngine.Animations;
 
 public class Clicker : MonoBehaviour
 {
-    private int _number = 0;
-    public int Number => _number;
-    public event Action<int> ClickedMouse;
+    [SerializeField] private float _delay = 0.5f;
+    [SerializeField] private TextMeshProUGUI _textNumber;
+
+    private int _number;
+
+    private void Start()
+    {
+        _textNumber.text = _number.ToString();
+        StartCoroutine(RunCorutain());
+    }
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Mouse0))
+        if (Input.GetMouseButton(0))
         {
-            _number++;
-            Debug.Log("done");
-            ClickedMouse?.Invoke(_number);
+            StopCoroutine(RunCorutain());
+            DislpayCountDown(_number++);
         }
     }
 
-    //public void MouseDown(int number)
-    //{
-    //    _number += number;
-    //}
+    private IEnumerator RunCorutain()
+    {
+        var wait = new WaitForSecondsRealtime(_delay);
+
+        while (true)
+        {
+            _number++;
+            DislpayCountDown(_number);
+            yield return wait;
+        }
+    }
+
+    private void DislpayCountDown(float elapsedTime)
+    {
+        _textNumber.text = elapsedTime.ToString("");
+    }
 }
