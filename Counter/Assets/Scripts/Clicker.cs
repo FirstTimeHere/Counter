@@ -11,18 +11,31 @@ public class Clicker : MonoBehaviour
 
     private int _number;
 
+    private bool _isUserWantChangedNumber = true;
+
     private void Start()
     {
-        _textNumber.text = _number.ToString();
+        DislpayCountDown(_number, _textNumber);
         Restart();
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse0))
+        bool _isMouseClicked = Input.GetKeyDown(KeyCode.Mouse0);
+
+        if (_isMouseClicked && _isUserWantChangedNumber)
+        {
+            _number++;
+            _isUserWantChangedNumber = false;
+        }
+        else if (_isMouseClicked && _coroutine == null && _isUserWantChangedNumber == false)
+        {
+            Restart();
+            _isUserWantChangedNumber = true;
+        }
+        else if (_isMouseClicked && _isUserWantChangedNumber == false)
         {
             Stop();
-            Restart();
         }
     }
 
@@ -31,6 +44,7 @@ public class Clicker : MonoBehaviour
         if (_coroutine != null)
         {
             StopCoroutine(_coroutine);
+            _coroutine = null;
         }
     }
 
