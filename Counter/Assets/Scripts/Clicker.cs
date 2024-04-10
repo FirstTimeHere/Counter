@@ -8,23 +8,24 @@ public class Clicker : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _textNumber;
 
     private int _number;
+    private static int s_mouseButton=0;
 
     private void Start()
     {
         _textNumber.text = _number.ToString();
-        StartCoroutine(RunCorutain());
+        StartCoroutine(RunCountDown());
     }
 
     private void Update()
     {
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButton(s_mouseButton))
         {
-            StopCoroutine(RunCorutain());
+            StopCoroutine(CountDown());
             DislpayCountDown(_number++);
         }
     }
 
-    private IEnumerator RunCorutain()
+    private IEnumerator RunCountDown()
     {
         var wait = new WaitForSecondsRealtime(_delay);
 
@@ -36,8 +37,8 @@ public class Clicker : MonoBehaviour
         }
     }
 
-    private void DislpayCountDown(float elapsedTime)
+    private void DislpayCountDown(float number)
     {
-        _textNumber.text = elapsedTime.ToString("");
+        _textNumber.text = number.ToString("");
     }
 }
