@@ -11,7 +11,7 @@ public class Clicker : MonoBehaviour
 
     private int _number;
 
-    private bool _isUserWantChangedNumber = true;
+    private bool _isClicked;
 
     private void Start()
     {
@@ -21,19 +21,19 @@ public class Clicker : MonoBehaviour
 
     private void Update()
     {
-        bool _isMouseClicked = Input.GetKeyDown(KeyCode.Mouse0);
+        bool isMouseClicked = Input.GetKeyDown(KeyCode.Mouse0);
 
-        if (_isMouseClicked && _isUserWantChangedNumber)
+        if (isMouseClicked && _isClicked == false)
         {
             _number++;
-            _isUserWantChangedNumber = false;
+            _isClicked = true;
         }
-        else if (_isMouseClicked && _coroutine == null && _isUserWantChangedNumber == false)
+        else if (isMouseClicked && _coroutine == null && _isClicked)
         {
             Restart();
-            _isUserWantChangedNumber = true;
+            _isClicked = false;
         }
-        else if (_isMouseClicked && _isUserWantChangedNumber == false)
+        else if (isMouseClicked && _isClicked)
         {
             Stop();
         }
